@@ -3,6 +3,11 @@ import * as xlsx from 'xlsx';
 import columnHeaders from './columnHeaders';
 import generateXMLData from './generateXMLData';
 import createXMLData from './createXMLData';
+import generateXMLData_SCH_0 from './generateXMLData_SCH_0';
+import generateXMLData_MRA from './generateXMLData_MRA';
+import generateXMLData_MRA_IB from './generateXMLData_MRA_IB';
+
+ 
 
 const readUploadFile = (file: Blob) => {
   const reader = new FileReader();
@@ -13,8 +18,34 @@ const readUploadFile = (file: Blob) => {
     const sheetNames = workbook.SheetNames;
 
     sheetNames.forEach((sheetName, index) => {
-      console.log(`Sheet index: ${index}, Sheet name: ${sheetName}`);
+      //console.log(`Sheet index: ${index}, Sheet name: ${sheetName}`);
     });
+
+    let SCH_0_TOTAL = '';
+   
+
+    let MRA_1B_TOTAL = '';
+    let MRA_TOTAL = '';
+    
+    
+    
+
+    const MRA_IB_DATE = workbook.Sheets[sheetNames[1]]['A6'] ? workbook.Sheets[sheetNames[1]]['A6'].w : '';
+    const MRA_DATE = workbook.Sheets[sheetNames[2]]['A6'] ? workbook.Sheets[sheetNames[2]]['A6'].w : '';
+    
+    const MRA_2_DATE = workbook.Sheets[sheetNames[19]]['A6'] ? workbook.Sheets[sheetNames[19]]['A6'].w : '';
+    const MRA_3_DATE = workbook.Sheets[sheetNames[37]]['A6'] ? workbook.Sheets[sheetNames[37]]['A6'].w : '';
+    const MRA_4_DATE = workbook.Sheets[sheetNames[54]]['A6'] ? workbook.Sheets[sheetNames[54]]['A6'].w : '';
+    const MRA_5_DATE = workbook.Sheets[sheetNames[71]]['A6'] ? workbook.Sheets[sheetNames[71]]['A6'].w : '';
+ 
+   
+    const SCH_0_1_DATE = workbook.Sheets[sheetNames[0]]['A6'] ? workbook.Sheets[sheetNames[0]]['A6'].w : '';
+    const SCH_0_2_DATE = workbook.Sheets[sheetNames[18]]['A6'] ? workbook.Sheets[sheetNames[18]]['A6'].w : '';
+    const SCH_0_3_DATE = workbook.Sheets[sheetNames[36]]['A6'] ? workbook.Sheets[sheetNames[36]]['A6'].w : '';
+    const SCH_0_4_DATE = workbook.Sheets[sheetNames[53]]['A6'] ? workbook.Sheets[sheetNames[53]]['A6'].w : '';
+    const SCH_0_5_DATE = workbook.Sheets[sheetNames[70]]['A6'] ? workbook.Sheets[sheetNames[70]]['A6'].w : '';
+
+
 
     let SCH_1_TOTAL = '';
     let SCH_2_TOTAL = '';
@@ -38,6 +69,12 @@ const readUploadFile = (file: Blob) => {
     const SCH_1_4_DATE = workbook.Sheets[sheetNames[55]]['A6'] ? workbook.Sheets[sheetNames[55]]['A6'].w : '';
     const SCH_1_5_DATE = workbook.Sheets[sheetNames[72]]['A6'] ? workbook.Sheets[sheetNames[72]]['A6'].w : '';
 
+   
+   
+   
+   
+   
+   
     if (
       SCH_1_1_DATE ||
       SCH_1_2_DATE ||
@@ -430,6 +467,64 @@ const readUploadFile = (file: Blob) => {
             )}</SCH_15>`;
     }
 
+//----------------for SCH_0
+
+if (
+  SCH_0_1_DATE ||
+  SCH_0_2_DATE ||
+  SCH_0_3_DATE ||
+  SCH_0_4_DATE ||
+  SCH_0_5_DATE
+) {
+  SCH_0_TOTAL = `<SCH_0>
+        ${generateXMLData_SCH_0(workbook, sheetNames[0], 'SCH_0', SCH_0_1_DATE)}
+        ${generateXMLData_SCH_0(workbook, sheetNames[18], 'SCH_0', SCH_0_2_DATE)}
+        ${generateXMLData_SCH_0(workbook, sheetNames[36], 'SCH_0', SCH_0_3_DATE)}
+        ${generateXMLData_SCH_0(workbook, sheetNames[53], 'SCH_0', SCH_0_4_DATE)}
+        
+        ${generateXMLData_SCH_0(
+          workbook,
+          sheetNames[70],
+          'SCH_0',
+          SCH_0_5_DATE,
+        )}</SCH_0>`;
+}
+
+
+//----------------for MRA
+
+
+
+if (
+  MRA_DATE ||
+  MRA_2_DATE ||
+  MRA_3_DATE ||
+  MRA_4_DATE ||
+  MRA_5_DATE
+) {
+  MRA_TOTAL = `<MRA>
+        ${generateXMLData_MRA(workbook, sheetNames[2], 'MRA', MRA_DATE)}
+        ${generateXMLData_MRA(workbook, sheetNames[19], 'MRA', MRA_2_DATE)}
+        ${generateXMLData_MRA(workbook, sheetNames[37], 'MRA', MRA_3_DATE)}
+        ${generateXMLData_MRA(workbook, sheetNames[54], 'MRA', MRA_4_DATE)}
+        
+        ${generateXMLData_MRA(
+          workbook,
+          sheetNames[71],
+          'MRA',
+          MRA_5_DATE,
+        )}</MRA>`;
+}
+//------------------------MRA_1B
+   
+
+MRA_1B_TOTAL = `<MRA_IB>
+        ${generateXMLData_MRA_IB(workbook, sheetNames[1], 'MRA_IB', MRA_IB_DATE)}
+        </MRA_IB>`;
+
+
+//---------------
+
     const dates = [
       new Date(SCH_1_1_DATE),
       new Date(SCH_1_2_DATE),
@@ -450,13 +545,16 @@ const readUploadFile = (file: Blob) => {
     const minDateValue = formatDate(minDate);
     const maxDateValue = formatDate(maxDate);
 
-    let xmlData = `
+    let xmlData = `<?xml version="1.0" encoding="utf-8"?>
       <ITRS_W xmlns="http://bsp.gov.ph/xml/ITRS_W/1.0">
         <Header>
           <Undertaking>10000002</Undertaking>
           <FromDate>${minDateValue}</FromDate>
           <ToDate>${maxDateValue}</ToDate>
         </Header>
+        ${SCH_0_TOTAL}
+        ${MRA_1B_TOTAL}
+        ${MRA_TOTAL}
         ${SCH_1_TOTAL}
         ${SCH_2_TOTAL}
         ${SCH_3_TOTAL}
@@ -476,7 +574,7 @@ const readUploadFile = (file: Blob) => {
 
       </ITRS_W>`;
 
-    console.log('XMLDate', xmlData);
+    //console.log('XMLDate', xmlData);
 
     createXMLData(xmlData, 'ITRS_Schedule_0.xml');
   };

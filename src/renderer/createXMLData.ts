@@ -3,6 +3,7 @@ const createXMLData = (data: string, filename: string) => {
   const dataStr = `data:text/application/xml;charset=utf-8,${encodeURIComponent(
     data,
   )}`;
+
   const element = document.createElement('a');
   element.href = dataStr;
   element.download = filename;
