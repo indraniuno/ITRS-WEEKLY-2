@@ -1,5 +1,5 @@
 // columnHeaders.ts
-
+ 
 const columnHeaders = {
   SCH_1: [
     'C0010',
@@ -110,9 +110,10 @@ const columnHeaders = {
     'C0070',
     'C0080',
     'C0090',
-    'C0090_A',
     'C0100',
+    'C0100_A',
     'C0110',
+    'C0120',
   ],
   SCH_8: [
     'C0010',
@@ -152,11 +153,9 @@ const columnHeaders = {
     'C0140',
     'C0150',
     'C0160',
+    'C0160_A',
     'C0170',
     'C0180',
-    'C0180_A',
-    'C0190',
-    'C0200',
   ],
   SCH_10: [
     'C0010',
@@ -180,14 +179,9 @@ const columnHeaders = {
     'C0060',
     'C0070',
     'C0080',
+    'C0080_A',
     'C0090',
     'C0100',
-    'C0110',
-    'C0120',
-    'C0130',
-    'C0140',
-    'C0150',
-    'C0160',
   ],
   SCH_12: [
     'C0010',
@@ -256,5 +250,6 @@ const columnHeaders = {
     'C0180',
   ],
 };
-
+ 
 export default columnHeaders;
+ 
